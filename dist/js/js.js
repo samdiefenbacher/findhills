@@ -55,9 +55,9 @@ $(function() {
     google.visualization.events.addListener(chart, 'onmouseover', function (e) {
         if (mousemarker == null) {
             mousemarker = new google.maps.Marker({
-                position: elevations[e.column].location,
-                map: map,
-                icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+              position: elevations[e.column].location,
+              map: map,
+              icon: "https://maps.google.com/mapfiles/ms/icons/green-dot.png",
             });
         } else {
             mousemarker.setPosition(elevations[e.column].location);
