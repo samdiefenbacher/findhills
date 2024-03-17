@@ -46,7 +46,7 @@ var showInfo = true;
 function main() {
   var myLatlng = new google.maps.LatLng(15, 0);
   var myOptions = {
-    zoom: 1,
+    zoom: 3,
     center: myLatlng,
     mapTypeId: google.maps.MapTypeId.TERRAIN,
     panControl: false,
@@ -107,7 +107,10 @@ function main() {
     var examples = [
       {
         // Ohio
-        latlngs: [[39.103119, -84.512016]],
+        latlngs: [
+          [39.103119, -84.512016],
+          [39.103129, -84.512026],
+        ],
         mapType: google.maps.MapTypeId.TERRAIN,
         travelMode: "driving",
       },
