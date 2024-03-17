@@ -51,3 +51,5 @@ bitly.php
 
 /vendor/
 .env
+/node_modules
+node_modules/
