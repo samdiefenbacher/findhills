@@ -33,8 +33,8 @@ google.charts.setOnLoadCallback(main);
 var infoString =
   '<div id="infowindow">' +
   "<h3>Click on map to add additional markers</h3>" +
-  "<p>FindHills helps you find hills by providing elevation profiles of routes.</p>" +
-  '<p>For more on how to use FindHills, <strong><a href="https://www.youtube.com/watch?v=TK_gelmHU-g">watch the tutorial on YouTube</a></strong>' +
+  "<p>LongboardHills helps you find hills by providing elevation profiles of routes.</p>" +
+  '<p>For more on how to use LongboardHills, <strong><a href="https://www.youtube.com/watch?v=TK_gelmHU-g">watch the tutorial on YouTube</a></strong>' +
   "</div>";
 
 var infoWindow = new google.maps.InfoWindow({
@@ -546,7 +546,7 @@ function shortenUrl() {
   });
 }
 
-// Update page title in form "USA: Bryn Mawr, PA. 6% (max 8%) 0.47 mi. - FindHills.com"
+// Update page title in form "USA: Bryn Mawr, PA. 6% (max 8%) 0.47 mi. - longboardhills.com"
 function updateTitle(grade, maxGrade, distance) {
   var origin = markers[0].getPosition();
   var town = "";
@@ -587,7 +587,7 @@ function updateTitle(grade, maxGrade, distance) {
 
         // Assemble new page title
         title =
-          "FindHills.com - " +
+          "longboardhills.com - " +
           country +
           ": " +
           town +
