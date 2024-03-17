@@ -24,122 +24,122 @@ var feet_to_mile = 5280;
 //   packages: ["columnchart"]
 //});
 
-google.charts.load('current', {packages: ['columnchart']});
-google.charts.setOnLoadCallback(function() { console.log("Visualization API loaded."); });
+google.charts.load("current", { packages: ["columnchart"] });
+google.charts.setOnLoadCallback(function () {
+  console.log("Visualization API loaded.");
+});
 google.charts.setOnLoadCallback(main);
 
-var infoString = '<div id="infowindow">' + 
-    '<h3>Click on map to add additional markers</h3>' + 
-    '<p>FindHills helps you find hills by providing elevation profiles of routes.</p>' + 
-    '<p>For more on how to use FindHills, <strong><a href="https://www.youtube.com/watch?v=TK_gelmHU-g">watch the tutorial on YouTube</a></strong>' +
-    '</div>'
+var infoString =
+  '<div id="infowindow">' +
+  "<h3>Click on map to add additional markers</h3>" +
+  "<p>FindHills helps you find hills by providing elevation profiles of routes.</p>" +
+  '<p>For more on how to use FindHills, <strong><a href="https://www.youtube.com/watch?v=TK_gelmHU-g">watch the tutorial on YouTube</a></strong>' +
+  "</div>";
 
 var infoWindow = new google.maps.InfoWindow({
-    content: infoString
+  content: infoString,
 });
 
 var showInfo = true;
 
 function main() {
-    var myLatlng = new google.maps.LatLng(15, 0);
-    var myOptions = {
-        zoom: 1,
-        center: myLatlng,
-        mapTypeId: google.maps.MapTypeId.TERRAIN,
-        panControl: false,
-        zoomControl: true,
-        zoomControlOptions: {
-            position: google.maps.ControlPosition.RIGHT_TOP
-        }
-    }
+  var myLatlng = new google.maps.LatLng(15, 0);
+  var myOptions = {
+    zoom: 1,
+    center: myLatlng,
+    mapTypeId: google.maps.MapTypeId.TERRAIN,
+    panControl: false,
+    zoomControl: true,
+    zoomControlOptions: {
+      position: google.maps.ControlPosition.RIGHT_TOP,
+    },
+  };
 
-    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-    chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+  map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+  chart = new google.visualization.ColumnChart(
+    document.getElementById("chart_div")
+  );
 
-    geocoderService = new google.maps.Geocoder();
-    elevationService = new google.maps.ElevationService();
-    directionsService = new google.maps.DirectionsService();
+  geocoderService = new google.maps.Geocoder();
+  elevationService = new google.maps.ElevationService();
+  directionsService = new google.maps.DirectionsService();
 
-    google.maps.event.addListener(map, 'click', function (event) {
-        addMarker(event.latLng, true);
-        showInfo = false;
-        console.log(showInfo);
+  google.maps.event.addListener(map, "click", function (event) {
+    addMarker(event.latLng, true);
+    showInfo = false;
+    console.log(showInfo);
+  });
 
-        ga('send', {
-            hitType: 'event',
-            eventCategory: 'Map',
-            eventAction: 'addMarker',
-            eventValue: markers.length
-        });
+  google.maps.event.addListener(map, "rightclick", function (event) {
+    reset();
+  });
 
-        ga('send', {
-            hitType: 'event',
-            eventCategory: 'Map',
-            eventAction: 'latLng',
-            eventLabel: String(event.latLng.lat()) + ", " + String(event.latLng.lng())
-        });
-    });
-
-    google.maps.event.addListener(map, 'rightclick', function (event) {
-        reset();
-        ga('send', 'event', 'RightClick', 'clearMap');
-    });
-
-    google.visualization.events.addListener(chart, 'onmouseover', function (e) {
-        if (mousemarker == null) {
-            mousemarker = new google.maps.Marker({
-                position: elevations[e.column].location,
-                map: map,
-                icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
-            });
-        } else {
-            mousemarker.setPosition(elevations[e.column].location);
-        }
-    });
-
-    if(paramsObj['location']){
-        var points =  paramsObj['location'];
-        points = points.split("~");
-        
-        for(var i = 0; i < points.length; i++) {
-            points[i] = points[i].split(",");
-        }
-        
-        var examples = [{
-            // Hawaii
-            latlngs: points,
-            mapType: google.maps.MapTypeId.TERRAIN,
-            travelMode: 'driving'
-        }];
+  google.visualization.events.addListener(chart, "onmouseover", function (e) {
+    if (mousemarker == null) {
+      mousemarker = new google.maps.Marker({
+        position: elevations[e.column].location,
+        map: map,
+        icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+      });
     } else {
-        var examples = [{
-            // Hawaii
-            latlngs: [
-                [20.712807, -156.251335],
-                [20.768995, -156.306052]
-            ],
-            mapType: google.maps.MapTypeId.TERRAIN,
-            travelMode: 'driving'
-        }];
-    };
-    
-    // Bind updateElevation function call to measurement radio buttions
-    $('input:radio[name=measurement]').click(function() {
-        updateElevation();
-    });
-    
-    // Update measurement system if different from URL; this way bookmarks maintain measurements they were created with
-    var url_distancein = getURLParameter('distancein');
-    if (url_distancein == 'metric') {
-        $('input:radio[name=measurement]')[1].checked = true;
+      mousemarker.setPosition(elevations[e.column].location);
     }
-    
-    loadExample(examples);
-};
+  });
+
+  if (paramsObj["location"]) {
+    var points = paramsObj["location"];
+    points = points.split("~");
+
+    for (var i = 0; i < points.length; i++) {
+      points[i] = points[i].split(",");
+    }
+
+    var examples = [
+      {
+        // Hawaii
+        latlngs: points,
+        mapType: google.maps.MapTypeId.TERRAIN,
+        travelMode: "driving",
+      },
+    ];
+  } else {
+    var examples = [
+      {
+        // Hawaii
+        latlngs: [
+          [20.712807, -156.251335],
+          [20.768995, -156.306052],
+        ],
+        mapType: google.maps.MapTypeId.TERRAIN,
+        travelMode: "driving",
+      },
+    ];
+  }
+
+  // Bind updateElevation function call to measurement radio buttions
+  $("input:radio[name=measurement]").click(function () {
+    updateElevation();
+  });
+
+  // Update measurement system if different from URL; this way bookmarks maintain measurements they were created with
+  var url_distancein = getURLParameter("distancein");
+  if (url_distancein == "metric") {
+    $("input:radio[name=measurement]")[1].checked = true;
+  }
+
+  loadExample(examples);
+}
 
 // Function to get given URL parameter
 function getURLParameter(name) {
-    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+  return (
+    decodeURIComponent(
+      (new RegExp("[?|&]" + name + "=" + "([^&;]+?)(&|#|;|$)").exec(
+        location.search
+      ) || [, ""])[1].replace(/\+/g, "%20")
+    ) || null
+  );
 }
 
 // Takes an array of ElevationResult objects, draws the path on the map
@@ -294,13 +294,6 @@ function clearMouseMarker() {
 // Geocode an address and add a marker for the result
 function addAddress() {
   var address = document.getElementById("address").value;
-
-  ga("send", {
-    hitType: "event",
-    eventCategory: "Text Input",
-    eventAction: "addressSearch",
-    eventLabel: address,
-  });
 
   geocoderService.geocode(
     {
@@ -516,100 +509,146 @@ function reset() {
 }
 
 // Calculates and returns grade
-function calcGrade(rise,run) {
-    return (rise/run*100).toFixed(2);
+function calcGrade(rise, run) {
+  return ((rise / run) * 100).toFixed(2);
 }
 
 // Traverses current markes on map, gets their location, and sets location hash property accordingly
 function updateLocationHash() {
-    var newpoint = "";
-    
-    for (var i = 0; i < markers.length; i++) {
-        if (newpoint != "") newpoint += "~"; // so ~ isn't added to before first point
-        newpoint += markers[i].getPosition().lat() + "," + markers[i].getPosition().lng();
-    }
-    
-    var state = {};
-    state['location'] = newpoint;
-    $.bbq.pushState(state); // push to state
-    
-    $('#url').val(window.location);
+  var newpoint = "";
+
+  for (var i = 0; i < markers.length; i++) {
+    if (newpoint != "") newpoint += "~"; // so ~ isn't added to before first point
+    newpoint +=
+      markers[i].getPosition().lat() + "," + markers[i].getPosition().lng();
+  }
+
+  var state = {};
+  state["location"] = newpoint;
+  $.bbq.pushState(state); // push to state
+
+  $("#url").val(window.location);
 }
 
 // Call up bitly.php to get shortened URL
 function shortenUrl() {
-    $.ajax({
-        type:"GET",
-        url:"bitlyxml.php",
-        data: { url: $('#url').val() + "" },
-        dataType:"xml",
-        success:function(xml) {
-            $('#url').val($(xml).find('shorturl').text());
-        }
-    }).done(function() {
-        document.getElementById('url').style.visibility = 'visible';
-        $('#url').select();
-
-        ga('send', {
-            hitType: 'event',
-            eventCategory: 'Button',
-            eventAction: 'shortenUrl',
-            eventLabel: $('#url').val()
-        });
-    });
+  $.ajax({
+    type: "GET",
+    url: "bitlyxml.php",
+    data: { url: $("#url").val() + "" },
+    dataType: "xml",
+    success: function (xml) {
+      $("#url").val($(xml).find("shorturl").text());
+    },
+  }).done(function () {
+    document.getElementById("url").style.visibility = "visible";
+    $("#url").select();
+  });
 }
 
 // Update page title in form "USA: Bryn Mawr, PA. 6% (max 8%) 0.47 mi. - FindHills.com"
-function updateTitle(grade,maxGrade,distance) {
-    var origin = markers[0].getPosition();
-    var town = "";
-    var state = "";
-    var country = "";
-    var title = "";
-    var newUrl = "";
-    var measurement = $("input[name=measurement]:checked").val();
-    var mi_or_km = ' mi.';
-    if (measurement == 'metric') { mi_or_km = ' km'; }
-    
-    
-    geocoderService.geocode({
-        'location': origin
-    }, function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {  
-            // Get address components from results and find town, state, and country
-            for(var i = 0; i<results[0].address_components.length;i++) {
-                if(results[0].address_components[i].types[0] == 'locality') town = results[0].address_components[i].long_name;
-                else if(results[0].address_components[i].types[0] == 'administrative_area_level_2' && town == "") town = results[0].address_components[i].long_name;
-                else if(results[0].address_components[i].types[0] == 'administrative_area_level_1') state = results[0].address_components[i].long_name;
-                else if(results[0].address_components[i].types[0] == 'country') country = results[0].address_components[i].long_name;               
-            }
-            
-            // Assemble new page title
-            title = "FindHills.com - " + country + ": " + town + " " + state + ". " + grade + "% (max " + maxGrade + "%) " + distance + mi_or_km;
-            
-            // Assemble new URL
-            if(window.location.href.search("hill\\?pagetitle") > -1) {
-                // console.log("1a. Found 'hill?pagetitle' in href.\nhref=" + window.location.href);
-                newUrl = window.location.href.split("hill?pagetitle")[0] + "hill?pagetitle=" + escape(title) + escape("&") + 'distancein=' + measurement + "#" + window.location.href.split("#")[1];
-                // console.log("1b. Found 'hill?pagetitle' in href.\nnewUrl" + newUrl);
-            } else if(window.location.href.search("pagetitle") > -1) {
-                // console.log("2a. Found '?pagetitle' in href.\nhref=" + window.location.href);
-                newUrl = window.location.href.split("?pagetitle")[0] + "hill?pagetitle=" + escape(title) + escape("&") + 'distancein=' + measurement + "#" + window.location.href.split("#")[1];
-                // console.log("2b. Found '?pagetitle' in href.\nnewUrl" + newUrl);
-            } else {
-                // console.log("3a. Did NOT find '?pagetitle' in href.\nhref=" + window.location.href);
-                newUrl = window.location.href.split("#")[0] + "hill?pagetitle=" + escape(title) +  escape("&") + 'distancein=' + measurement + "#" + window.location.href.split("#")[1];
-                // console.log("3b. Did NOT find '?pagetitle' in href.\nnewUrl" + newUrl);
-            }
-            
-            // Update browser and box URL dynamically with new url as well as current document title
-            $('#url').val(newUrl);
-            window.history.pushState("", title, newUrl);
-            document.title = title;
-        } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
-            alert("Address not found");
-        } else {
-            alert("Address lookup failed");
+function updateTitle(grade, maxGrade, distance) {
+  var origin = markers[0].getPosition();
+  var town = "";
+  var state = "";
+  var country = "";
+  var title = "";
+  var newUrl = "";
+  var measurement = $("input[name=measurement]:checked").val();
+  var mi_or_km = " mi.";
+  if (measurement == "metric") {
+    mi_or_km = " km";
+  }
+
+  geocoderService.geocode(
+    {
+      location: origin,
+    },
+    function (results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        // Get address components from results and find town, state, and country
+        for (var i = 0; i < results[0].address_components.length; i++) {
+          if (results[0].address_components[i].types[0] == "locality")
+            town = results[0].address_components[i].long_name;
+          else if (
+            results[0].address_components[i].types[0] ==
+              "administrative_area_level_2" &&
+            town == ""
+          )
+            town = results[0].address_components[i].long_name;
+          else if (
+            results[0].address_components[i].types[0] ==
+            "administrative_area_level_1"
+          )
+            state = results[0].address_components[i].long_name;
+          else if (results[0].address_components[i].types[0] == "country")
+            country = results[0].address_components[i].long_name;
         }
-    });
+
+        // Assemble new page title
+        title =
+          "FindHills.com - " +
+          country +
+          ": " +
+          town +
+          " " +
+          state +
+          ". " +
+          grade +
+          "% (max " +
+          maxGrade +
+          "%) " +
+          distance +
+          mi_or_km;
+
+        // Assemble new URL
+        if (window.location.href.search("hill\\?pagetitle") > -1) {
+          // console.log("1a. Found 'hill?pagetitle' in href.\nhref=" + window.location.href);
+          newUrl =
+            window.location.href.split("hill?pagetitle")[0] +
+            "hill?pagetitle=" +
+            escape(title) +
+            escape("&") +
+            "distancein=" +
+            measurement +
+            "#" +
+            window.location.href.split("#")[1];
+          // console.log("1b. Found 'hill?pagetitle' in href.\nnewUrl" + newUrl);
+        } else if (window.location.href.search("pagetitle") > -1) {
+          // console.log("2a. Found '?pagetitle' in href.\nhref=" + window.location.href);
+          newUrl =
+            window.location.href.split("?pagetitle")[0] +
+            "hill?pagetitle=" +
+            escape(title) +
+            escape("&") +
+            "distancein=" +
+            measurement +
+            "#" +
+            window.location.href.split("#")[1];
+          // console.log("2b. Found '?pagetitle' in href.\nnewUrl" + newUrl);
+        } else {
+          // console.log("3a. Did NOT find '?pagetitle' in href.\nhref=" + window.location.href);
+          newUrl =
+            window.location.href.split("#")[0] +
+            "hill?pagetitle=" +
+            escape(title) +
+            escape("&") +
+            "distancein=" +
+            measurement +
+            "#" +
+            window.location.href.split("#")[1];
+          // console.log("3b. Did NOT find '?pagetitle' in href.\nnewUrl" + newUrl);
+        }
+
+        // Update browser and box URL dynamically with new url as well as current document title
+        $("#url").val(newUrl);
+        window.history.pushState("", title, newUrl);
+        document.title = title;
+      } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
+        alert("Address not found");
+      } else {
+        alert("Address lookup failed");
+      }
+    }
+  );
 }
