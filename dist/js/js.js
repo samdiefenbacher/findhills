@@ -108,7 +108,7 @@ function main() {
       {
         // Ohio
         latlngs: [
-          [39.103119, -84.512016],
+          [39.103119, -84.532016],
           [39.103129, -84.512026],
         ],
         mapType: google.maps.MapTypeId.TERRAIN,
