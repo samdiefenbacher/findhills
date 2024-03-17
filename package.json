@@ -1,0 +1,23 @@
+{
+  "name": "findhills",
+  "version": "1.0.0",
+  "description": "Find hills!",
+  "main": "build.js",
+  "scripts": {
+    "build": "set NODE_ENV=dev && node build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samdiefenbacher/findhills.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/samdiefenbacher/findhills/issues"
+  },
+  "homepage": "https://github.com/samdiefenbacher/findhills#readme",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "replace-in-file": "^7.1.0"
+  }
+}
