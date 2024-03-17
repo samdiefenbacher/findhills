@@ -13,5 +13,11 @@
             "email": "samdief1@gmail.com"
         }
     ],
+    "scripts": {
+        "build": [ "mkdir dist", "cp -r src/* dist/" ]
+    },
+    "scripts-descriptions": {
+        "build": "Build project artifact."
+    },
     "require": {}
 }

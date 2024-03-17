@@ -58,7 +58,7 @@
 
 	<?php echo "<!-- $grade_int -->"; ?>
 	
-	<link rel="stylesheet" href="styles.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="../styles.css" type="text/css" media="all" />
 	<link rel="image_src" href="http://www.findhills.com/images/fb_link_share_<?php echo $grade_int; ?>pct.jpg" />
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	
