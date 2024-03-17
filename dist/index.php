@@ -3,7 +3,7 @@
 <head>
 	<title>
 	<?php 
-		if(!$_GET['pagetitle']) echo "FindHills.com: Find a Hill to Longboard Near You";
+		if(!$_GET['pagetitle']) echo "FindHills.com: Find 1 a Hill to Longboard Near You";
 		else {
 			$title = $_GET['pagetitle'];
 			$title = explode("&",$title);
