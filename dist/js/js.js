@@ -106,11 +106,8 @@ function main() {
   } else {
     var examples = [
       {
-        // Hawaii
-        latlngs: [
-          [20.712807, -156.251335],
-          [20.768995, -156.306052],
-        ],
+        // Ohio
+        latlngs: [[39.103119, -84.512016]],
         mapType: google.maps.MapTypeId.TERRAIN,
         travelMode: "driving",
       },
