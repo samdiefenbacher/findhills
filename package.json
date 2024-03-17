@@ -1,7 +1,7 @@
 {
   "name": "findhills",
   "version": "1.0.0",
-  "description": "Find hills!",
+  "description": "Longboard Hills!",
   "main": "build.js",
   "scripts": {
     "build": "set NODE_ENV=dev && node build.js"
